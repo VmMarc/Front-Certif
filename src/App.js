@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import Dapp from './Dapp'
+import { useContract } from 'web3-hooks'
+import {
+  SimpleStorageAddress,
+  SimpleStorageAbi,
+} from './contracts/SimpleStorage'
+
+export const SimpleStorageContext = React.createContext(null)
 
 function App() {
+  const simpleStorage = useContract(SimpleStorageAddress, SimpleStorageAbi)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <SimpleStorageContext.Provider value={simpleStorage}>
+      <Dapp />
+    </SimpleStorageContext.Provider>
+  )
 }
 
-export default App;
+export default App
