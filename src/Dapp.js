@@ -26,7 +26,6 @@ function Dapp() {
     // si simpleStorage est pas null alors
     if (simpleStorage) {
       const cb = (account, str) => {
-        console.log(str)
         setValue(str)
       }
       // ecouter sur l'event DataSet
