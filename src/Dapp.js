@@ -124,7 +124,6 @@ function Dapp() {
       setIsLoading(true)
       let tx = await simpleStorage.setData(inputValue)
       await tx.wait()
-      setIsLoading(false)
       toast({
         title: 'Confirmed transaction',
         description: `storage is set wiht value: ${inputValue}\nTransaction hash: ${tx.hash}`,
@@ -133,17 +132,18 @@ function Dapp() {
         isClosable: true,
       })
     } catch (e) {
-      setIsLoading(false)
       if (e.code === 4001) {
         toast({
           title: 'Transaction signature denied',
-          description: 'You denied transaction signature.',
+          description: e.message,
           status: 'error',
           duration: 9000,
           isClosable: true,
         })
       }
       console.log(e)
+    } finally {
+      setIsLoading(false)
     }
   }
 
