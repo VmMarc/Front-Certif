@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Admin from "./components/Admin";
+import MarketPlace from "./components/MaketPlace";
 import GameCreator from "./components/GameCreator";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
