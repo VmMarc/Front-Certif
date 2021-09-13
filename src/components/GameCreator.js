@@ -10,12 +10,10 @@ import {
   FormLabel,
   Input,
   Button,
-  Box,
-  CloseButton,
 } from "@chakra-ui/react"
 import { useDisclosure, useToast } from "@chakra-ui/react"
 import { GameKeysContext } from '../App'
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { Web3Context } from "web3-hooks";
 
 function GameCreator() {
@@ -24,62 +22,65 @@ function GameCreator() {
   const [web3State] = useContext(Web3Context)
   const [inputValue, SetInputValue] = useState('')
   const toast = useToast()
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleRegisterNewGame = async () => {
     const title = inputValue.title
     const cover = inputValue.cover
     const description = inputValue.description
     const price = inputValue.price
-
-    setLoading(true)
     try {
-      const tx = await gameKeys.registerNewGame(title, cover, description, price)
-      const network = web3State.networkName.toLowerCase()
-      const link = `https://${network}.etherscan.io/tx/${tx.hash}`
-
+      setIsLoading(true)
+      let tx = await gameKeys.registerNewGame(title, cover, description, price)
+      await tx.wait()
       toast({
-        title: "Transation sent successfully",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      })
-
-      toast({
-        title: 'Game created successfully',
-        status: "success",
-        render: ({ id, onClose }) => (
-          <Box color="white" p={3} bg="green.500" rounded={20}>
-            <CloseButton id={id} onClose={onClose} />
-            <br />You can view your transaction at hash :
-            <br /><a target="blank" style={{ color: "orange" }} href={link}>{tx.hash}</a>
-          </Box>),
-        position: "top-right",
+        title: 'Confirmed transaction',
+        status: 'success',
         duration: 9000,
         isClosable: true,
       })
     } catch (e) {
-      toast({
-        title: 'Error',
-        description: e.error ? e.error.message : e.message,
-        status: 'error',
-        position: 'top-right',
-        duration: 9000,
-        isClosable: true,
-      })
+      if (e.code === 4001) {
+        toast({
+          title: 'Transaction signature denied',
+          description: e.message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+      console.log(e)
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
-
+  // Listen to GameCreatorAdded event and react with a state change
+  useEffect(() => {
+    if (gameKeys) {
+      const cb = (account, gameID, priceInFinney) => {
+        toast({
+          title: 'Event NewGameRegistered',
+          description: `Game ID: ${gameID} Game creator: ${account} Price in Finney: ${priceInFinney}`,
+          status: 'info',
+          position: 'top-right',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+      // ecouter sur l'event DataSet
+      gameKeys.on('NewGameRegistered', cb)
+      return () => {
+        // arreter d'ecouter lorsque le component sera unmount
+        gameKeys.off('NewGameRegistered', cb)
+      }
+    }
+  }, [gameKeys, web3State.account, toast])
 
   return (
     <>
       <Button
         onClick={onOpen}
-        isLoading={loading}
-        loadingText="Submitting"
         colorScheme="teal"
         variant="solid"
         size="lg"
@@ -136,7 +137,12 @@ function GameCreator() {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={handleRegisterNewGame} colorScheme="blue" mr={3}>
+            <Button
+              isLoading={isLoading}
+              loadingText="adding new game..."
+              colorScheme="teal"
+              onClick={handleRegisterNewGame}
+              mr={3}>
               Create
             </Button>
             <Button onClick={onClose}>Cancel</Button>
