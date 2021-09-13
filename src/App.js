@@ -2,18 +2,18 @@ import React from 'react'
 import Dapp from './Dapp'
 import { useContract } from 'web3-hooks'
 import {
-  SimpleStorageAddress,
-  SimpleStorageAbi,
-} from './contracts/SimpleStorage'
+  GameKeysAddress,
+  GameKeysABI,
+} from './contracts/GameKeys'
 
-export const SimpleStorageContext = React.createContext(null)
+export const GameKeysContext = React.createContext(null)
 
 function App() {
-  const simpleStorage = useContract(SimpleStorageAddress, SimpleStorageAbi)
+  const gameKeys = useContract(GameKeysAddress, GameKeysABI)
   return (
-    <SimpleStorageContext.Provider value={simpleStorage}>
+    <GameKeysContext.Provider value={gameKeys}>
       <Dapp />
-    </SimpleStorageContext.Provider>
+    </GameKeysContext.Provider>
   )
 }
 
