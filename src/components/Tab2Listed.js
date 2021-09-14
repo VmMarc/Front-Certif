@@ -1,5 +1,4 @@
-import { Center, Heading, Image, Container, Button, VStack, HStack, Box, CloseButton } from "@chakra-ui/react"
-import ContentModal from "./contentModal"
+import { Center, Heading, Image, Container, Button, VStack, Box, CloseButton } from "@chakra-ui/react"
 import { useToast } from "@chakra-ui/react"
 import { useState, useContext } from "react"
 import { Web3Context } from "web3-hooks";
@@ -7,7 +6,7 @@ import { ethers } from "ethers"
 import { GameKeysContext } from "../App"
 
 const Tab2Listed = ({ nft }) => {
-  const { gameKeys } = useContext(GameKeysContext)
+  const gameKeys = useContext(GameKeysContext)
   const [web3State] = useContext(Web3Context);
   const toast = useToast()
   const [loading, setLoading] = useState(false)
@@ -57,31 +56,22 @@ const Tab2Listed = ({ nft }) => {
 
         <Center>
           <Image
-            boxSize={nft.url}
             objectFit="cover"
-            src={nft.url}
+            src={nft.cover}
             borderRadius="xl"
           />
         </Center>
 
-        <Center mt="-5" position="relative">
-          <Heading as="h1" size="lg" color="yellow.400">{nft.price} BNB</Heading>
-        </Center>
-
         <Center>
-          <HStack mt="3" spacing="10">
-            <ContentModal content={nft.content} />
-            <Button
-              onClick={handleBuyButton}
-              isFullWidth
-              isLoading={loading}
-              colorScheme="whatsapp"
-            >
-              Buy
-            </Button>
-          </HStack>
+          <Button
+            onClick={handleBuyButton}
+            isFullWidth
+            isLoading={loading}
+            colorScheme="whatsapp"
+          >
+            {nft.price} ETH
+          </Button>
         </Center>
-
       </VStack>
     </Container>
   )

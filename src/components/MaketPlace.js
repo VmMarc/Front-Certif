@@ -10,6 +10,7 @@ import { Container, SimpleGrid } from "@chakra-ui/react"
 import { GameKeysContext } from '../App'
 import { useState, useEffect, useContext } from "react"
 import { Web3Context } from "web3-hooks";
+import { ethers } from "ethers";
 import NFTListed from "./NFTListed"
 
 
@@ -32,9 +33,9 @@ const MarketPlace = () => {
               cover: nft.cover,
               creator: nft.creator,
               description: nft.description,
-              price: nft.price,
+              price: ethers.utils.formatEther(nft.price),
               date: nft.date.toString(),
-              gameHash: nft.gameHash,
+              gameHash: nft.gameHash.toString(),
               id: i,
             })
           }
@@ -49,7 +50,6 @@ const MarketPlace = () => {
 
   return (
     <Container centerContent maxW="container.xl" py="10">
-
       <SimpleGrid columns={[1, 1, 1, 2, 3]} gap="8">
         {listing.map((el, index) => {
           return <NFTListed key={index} nft={el}></NFTListed>
