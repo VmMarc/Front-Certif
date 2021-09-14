@@ -80,6 +80,8 @@ function GameCreator() {
   return (
     <>
       <Button
+        isLoading={isLoading}
+        loadingText="adding new game"
         onClick={onOpen}
         colorScheme="teal"
         variant="solid"

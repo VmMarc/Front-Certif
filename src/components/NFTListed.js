@@ -11,8 +11,8 @@ const NFTListed = ({ nft }) => {
     setTabIndex(index)
   }
   return (
-    <Container backgroundColor="blue.300" borderRadius="3rem" height="30rem" width="24rem" >
-      <Circle mb="-8" position="relative" bottom="1rem" left="-11rem" size="16" fontWeight="bold" fontSize="40" bg="tomato" color="white">
+    <Container backgroundColor="blue.300" borderRadius="1rem" height="30rem" width="24rem" >
+      <Circle mb="-8" position="relative" bottom="1rem" left="-11rem" size="14" fontWeight="bold" fontSize="40" bg="tomato" color="white">
         {nft.id}
       </Circle>
 

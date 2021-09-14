@@ -12,15 +12,15 @@ function Dapp() {
       <main>
         <Tabs align="center" variant="soft-rounded" colorScheme="teal" >
           <TabList >
-            <Tab borderWidth="4px" m="1rem" fontSize="2xl">
+            <Tab borderWidth="4px" m="2rem" fontSize="2xl">
               MarketPlace
             </Tab>
 
-            <Tab borderWidth="4px" m="1rem" fontSize="2xl">
+            <Tab borderWidth="4px" m="2rem" fontSize="2xl">
               GameCreator
             </Tab>
 
-            <Tab borderWidth="4px" m="1rem" fontSize="2xl">
+            <Tab borderWidth="4px" m="2rem" fontSize="2xl">
               Admin
             </Tab>
           </TabList>
@@ -34,7 +34,7 @@ function Dapp() {
               <GameCreator />
             </TabPanel>
 
-            <TabPanel p={50}>
+            <TabPanel >
               <Admin />
             </TabPanel>
           </TabPanels>

@@ -41,6 +41,21 @@ const Tab3 = ({ nft }) => {
         </Center>
 
         <Center>
+          <Text fontWeight="bold">Description</Text>
+          <Spacer />
+          <Popover>
+            <PopoverTrigger>
+              <Button>Click</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              <PopoverBody>{nft.description}</PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </Center>
+
+        <Center>
           <Text fontWeight="bold">Cover</Text>
           <Spacer />
           <Popover>
