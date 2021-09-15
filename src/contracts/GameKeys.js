@@ -1,4 +1,4 @@
-export const GameKeysAddress = '0x74afb16b13c00cA5F59fB5386F30fc6791c5e86f'
+export const GameKeysAddress = '0x17873ae7AB93E6762ee585FAb2564fA260733BE4'
 
 export const GameKeysABI = [
   {
@@ -755,6 +755,19 @@ export const GameKeysABI = [
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "licenceTotalSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",

@@ -10,8 +10,9 @@ import {
   FormLabel,
   Input,
   Button,
+  Heading
 } from "@chakra-ui/react"
-import { useDisclosure, useToast } from "@chakra-ui/react"
+import { useDisclosure, useToast, Container, VStack } from "@chakra-ui/react"
 import { GameKeysContext } from '../App'
 import { useState, useContext, useEffect } from "react"
 import { Web3Context } from "web3-hooks";
@@ -77,81 +78,118 @@ function GameCreator() {
     }
   }, [gameKeys, web3State.account, toast])
 
+  const handleGetEtherButton = async () => {
+    try {
+      setIsLoading(true)
+      gameKeys.withdraw()
+      let tx = await gameKeys.withdraw()
+      await tx.wait()
+      toast({
+        title: 'Confirmed transaction',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+    } catch (e) {
+      if (e.code === 4001) {
+        toast({
+          title: 'Transaction signature denied',
+          description: e.message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
-    <>
-      <Button
-        isLoading={isLoading}
-        loadingText="adding new game"
-        onClick={onOpen}
-        colorScheme="teal"
-        variant="solid"
-        size="lg"
-        mt="5"
-      >Create new game !</Button>
+    <Container centerContent maxW="container.xl" py="10">
+      <Heading mb="5">Game Creator's Dashboard</Heading>
+      <VStack spacing="20px">
+        <Button
+          variant="solid"
+          size="lg"
+          mt="5"
+          onClick={handleGetEtherButton}>Withdraw balances</Button>
+
+        <Button
+          isLoading={isLoading}
+          loadingText="adding new game"
+          onClick={onOpen}
+          colorScheme="teal"
+          variant="solid"
+          size="lg"
+          mt="5"
+        >Create new game !</Button>
 
 
-      <Modal
-        isCentered
-        isOpen={isOpen}
-        onClose={onClose}
-        motionPreset="slideInBottom"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Informations</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Title</FormLabel>
-              <Input
-                value={inputValue.title}
-                onChange={(e) => SetInputValue({ ...inputValue, title: e.target.value })}
-                placeholder="Game title"
-              />
-            </FormControl>
+        <Modal
+          isCentered
+          isOpen={isOpen}
+          onClose={onClose}
+          motionPreset="slideInBottom"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Informations</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl>
+                <FormLabel>Title</FormLabel>
+                <Input
+                  value={inputValue.title}
+                  onChange={(e) => SetInputValue({ ...inputValue, title: e.target.value })}
+                  placeholder="Game title"
+                />
+              </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Cover</FormLabel>
-              <Input
-                value={inputValue.cover}
-                onChange={(e) => SetInputValue({ ...inputValue, cover: e.target.value })}
-                placeholder="https://www.google.com/your-image.jpg"
-              />
-            </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Cover</FormLabel>
+                <Input
+                  value={inputValue.cover}
+                  onChange={(e) => SetInputValue({ ...inputValue, cover: e.target.value })}
+                  placeholder="https://www.google.com/your-image.jpg"
+                />
+              </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Description</FormLabel>
-              <Input
-                value={inputValue.description}
-                onChange={(e) => SetInputValue({ ...inputValue, description: e.target.value })}
-                placeholder="Tell us more about this game"
-              />
-            </FormControl>
+              <FormControl mt={4}>
+                <FormLabel>Description</FormLabel>
+                <Input
+                  value={inputValue.description}
+                  onChange={(e) => SetInputValue({ ...inputValue, description: e.target.value })}
+                  placeholder="Tell us more about this game"
+                />
+              </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Price</FormLabel>
-              <Input
-                value={inputValue.price}
-                onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}
-                placeholder="Game price in Finney"
-              />
-            </FormControl>
-          </ModalBody>
+              <FormControl mt={4}>
+                <FormLabel>Price</FormLabel>
+                <Input
+                  value={inputValue.price}
+                  onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}
+                  placeholder="Game price in Finney"
+                />
+              </FormControl>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button
-              isLoading={isLoading}
-              loadingText="adding new game..."
-              colorScheme="teal"
-              onClick={handleRegisterNewGame}
-              mr={3}>
-              Create
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+            <ModalFooter>
+              <Button
+                isLoading={isLoading}
+                loadingText="adding new game..."
+                colorScheme="teal"
+                onClick={handleRegisterNewGame}
+                mr={3}>
+                Create
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </VStack>
+    </Container>
   )
 }
 

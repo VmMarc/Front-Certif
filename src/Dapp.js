@@ -3,6 +3,7 @@ import Admin from "./components/Admin";
 import MarketPlace from "./components/MaketPlace";
 import GameCreator from "./components/GameCreator";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import Dashboard from "./components/Dashboard";
 
 function Dapp() {
   return (
@@ -17,6 +18,10 @@ function Dapp() {
             </Tab>
 
             <Tab borderWidth="4px" m="2rem" fontSize="2xl">
+              Dashboard
+            </Tab>
+
+            <Tab borderWidth="4px" m="2rem" fontSize="2xl">
               GameCreator
             </Tab>
 
@@ -28,6 +33,10 @@ function Dapp() {
           <TabPanels>
             <TabPanel>
               <MarketPlace />
+            </TabPanel>
+
+            <TabPanel>
+              <Dashboard />
             </TabPanel>
 
             <TabPanel>

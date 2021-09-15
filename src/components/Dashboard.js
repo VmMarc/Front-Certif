@@ -1,34 +1,25 @@
-// string title;
-// string cover;
-// address creator;
-// string description;
-// uint256 price;
-// uint256 date;
-// bytes32 gameHash;
-
+import DashboardCards from "./DashboardCards"
 import { Container, SimpleGrid, Heading } from "@chakra-ui/react"
 import { GameKeysContext } from '../App'
+import { ethers } from "ethers";
 import { useState, useEffect, useContext } from "react"
 import { Web3Context } from "web3-hooks";
-import { ethers } from "ethers";
-import NFTListed from "./NFTListed"
 
-
-const MarketPlace = () => {
-  const [web3State] = useContext(Web3Context);
-  const [listing, setlisting] = useState([]);
+const Dashboard = () => {
+  let [dashboard, setDashboard] = useState([])
   const gameKeys = useContext(GameKeysContext)
-
+  const [web3State] = useContext(Web3Context);
 
   useEffect(() => {
     if (web3State.chainId === 42) {
-      const getGames = async () => {
-        try {
-          const listingApproved = []
-          const totalSupply = await gameKeys.gameTotalSupply()
-          for (let i = 1; i <= totalSupply.toString(); i++) {
+      const getLicence = async () => {
+        const licensesOwned = []
+        const totalSupply = await gameKeys.totalSupply()
+        for (let i = 1; i <= totalSupply.toString(); i++) {
+          let owner = await gameKeys.ownerOf(i)
+          if (owner.toLowerCase() === web3State.account) {
             const nft = await gameKeys.getGameInfosById(i)
-            listingApproved.push({
+            licensesOwned.push({
               title: nft.title,
               cover: nft.cover,
               creator: nft.creator,
@@ -39,25 +30,29 @@ const MarketPlace = () => {
               id: i,
             })
           }
-          setlisting(listingApproved)
-        } catch (e) {
-          console.log(e.message)
         }
+        setDashboard(licensesOwned)
       }
-      getGames()
+
+      try {
+        getLicence()
+      } catch (e) {
+        console.log(e)
+      }
     }
   }, [gameKeys, web3State])
 
+
   return (
     <Container centerContent maxW="container.xl" py="10">
-      <Heading mb="5">Games</Heading>
+      <Heading mb="5">Your game licenses</Heading>
       <SimpleGrid columns={[1, 1, 1, 2, 3]} gap="8">
-        {listing.map((el, index) => {
-          return <NFTListed key={index} nft={el}></NFTListed>
+        {dashboard.map((el, index) => {
+          return <DashboardCards key={index} nft={el}></DashboardCards>
         })}
       </SimpleGrid>
     </Container>
   )
 }
 
-export default MarketPlace
+export default Dashboard

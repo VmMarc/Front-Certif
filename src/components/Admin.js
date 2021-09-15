@@ -8,6 +8,8 @@ import {
   HStack,
   Spinner,
   useToast,
+  Container,
+  Heading
 } from '@chakra-ui/react'
 import { Web3Context } from 'web3-hooks'
 import { GameKeysContext } from '../App'
@@ -71,7 +73,8 @@ function Admin() {
   }, [gameKeys, web3State.account, toast])
 
   return (
-    <>
+    <Container centerContent maxW="container.xl" py="10">
+      <Heading mb="5">Admin's Dashboard</Heading>
       <Flex flexDirection="column" alignItems="center" m={4} h="300px">
         {!gameKeys ? (
           <Spinner
@@ -110,7 +113,7 @@ function Admin() {
           </>
         )}
       </Flex>
-    </>
+    </Container>
   )
 }
 
