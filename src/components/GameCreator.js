@@ -1,4 +1,20 @@
 import {
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/react"
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  PopoverArrow,
+  PopoverCloseButton,
+  Portal
+} from "@chakra-ui/react"
+import {
   Modal,
   ModalOverlay,
   ModalContent,
@@ -10,19 +26,22 @@ import {
   FormLabel,
   Input,
   Button,
-  Heading
+  Heading,
+  Center
 } from "@chakra-ui/react"
 import { useDisclosure, useToast, Container, VStack } from "@chakra-ui/react"
 import { GameKeysContext } from '../App'
 import { useState, useContext, useEffect } from "react"
 import { Web3Context } from "web3-hooks";
+import { ethers } from "ethers";
 
 function GameCreator() {
+  const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const gameKeys = useContext(GameKeysContext)
   const [web3State] = useContext(Web3Context)
   const [inputValue, SetInputValue] = useState('')
-  const toast = useToast()
+  const [etherBalance, setEtherBalance] = useState(0);
   const [isLoading, setIsLoading] = useState(false)
 
   const handleRegisterNewGame = async () => {
@@ -78,10 +97,52 @@ function GameCreator() {
     }
   }, [gameKeys, web3State.account, toast])
 
-  const handleGetEtherButton = async () => {
+  // Listen to GameCreatorAdded event and react with a state change
+  useEffect(() => {
+    if (gameKeys) {
+      const GameBenefitsWithdrewEvent = (account, profitAmount) => {
+        toast({
+          title: 'Event GameBenefitsWithdrew',
+          description: `Game creator: ${account} claimed ${profitAmount} finney`,
+          status: 'info',
+          position: 'top-right',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+      // ecouter sur l'event DataSet
+      gameKeys.on('GameBenefitsWithdrew', GameBenefitsWithdrewEvent)
+      return () => {
+        // arreter d'ecouter lorsque le component sera unmount
+        gameKeys.off('GameBenefitsWithdrew', GameBenefitsWithdrewEvent)
+      }
+    }
+  }, [gameKeys, web3State.account, toast])
+
+  const getBalances = async () => {
     try {
       setIsLoading(true)
-      gameKeys.withdraw()
+      let tx = await gameKeys.getCreatorBalance(web3State.account.toLowerCase())
+      setEtherBalance(ethers.utils.formatEther(tx))
+    } catch (e) {
+      if (e.code === 4001) {
+        toast({
+          title: 'Transaction failed',
+          description: e.message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+      console.log(e)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleWithdrawButton = async () => {
+    try {
+      setIsLoading(true)
       let tx = await gameKeys.withdraw()
       await tx.wait()
       toast({
@@ -110,11 +171,34 @@ function GameCreator() {
     <Container centerContent maxW="container.xl" py="10">
       <Heading mb="5">Game Creator's Dashboard</Heading>
       <VStack spacing="20px">
-        <Button
-          variant="solid"
-          size="lg"
-          mt="5"
-          onClick={handleGetEtherButton}>Withdraw balances</Button>
+        <Popover>
+          <PopoverTrigger>
+            <Button
+              onClick={getBalances}
+              colorScheme="whatsapp"
+              variant="solid"
+              size="lg"
+              mt="5">
+              Withdraw your profits</Button>
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              <PopoverBody>
+                <Center>
+                  <Button
+                    isCentered colorScheme="blue"
+                    isLoading={isLoading}
+                    loadingText="claiming profits..."
+                    onClick={handleWithdrawButton}>
+                    Claim  {etherBalance} ETH now !
+                  </Button>
+                </Center>
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </Popover>
 
         <Button
           isLoading={isLoading}
@@ -126,6 +210,7 @@ function GameCreator() {
           mt="5"
         >Create new game !</Button>
 
+        {/* register modal */}
 
         <Modal
           isCentered
@@ -167,11 +252,17 @@ function GameCreator() {
 
               <FormControl mt={4}>
                 <FormLabel>Price</FormLabel>
-                <Input
-                  value={inputValue.price}
-                  onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}
-                  placeholder="Game price in Finney"
-                />
+                <NumberInput step={1} min={0} max={100}>
+                  <NumberInputField
+                    value={inputValue.price}
+                    onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}
+                    placeholder="Game price in Finney"
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
               </FormControl>
             </ModalBody>
 
