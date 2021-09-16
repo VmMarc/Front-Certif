@@ -14,7 +14,7 @@ const DashboardCards = ({ nft }) => {
   return (
     <Container backgroundColor="purple.400" borderRadius="3rem" height="30rem" width="24rem" >
       <Circle mb="-8" position="relative" bottom="1rem" left="-11rem" size="16" fontWeight="bold" fontSize="40" bg="tomato" color="white">
-        {nft.id}
+        {nft.gameID}
       </Circle>
 
       <Tabs index={tabIndex} onChange={handleTabsChange} variant="soft-rounded" colorScheme="green" defaultIndex={1}>

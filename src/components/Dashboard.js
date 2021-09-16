@@ -13,27 +13,51 @@ const Dashboard = () => {
   useEffect(() => {
     if (web3State.chainId === 42) {
       const getLicence = async () => {
-        const licensesOwned = []
-        const totalSupply = await gameKeys.totalSupply()
-        for (let i = 1; i <= totalSupply.toString(); i++) {
-          let owner = await gameKeys.ownerOf(i)
-          if (owner.toLowerCase() === web3State.account) {
-            const nft = await gameKeys.getGameInfosById(i)
-            licensesOwned.push({
-              title: nft.title,
-              cover: nft.cover,
-              creator: nft.creator,
-              description: nft.description,
-              price: ethers.utils.formatEther(nft.price),
-              date: nft.date.toString(),
-              gameHash: nft.gameHash.toString(),
-              id: i,
-            })
-          }
+        let licensesOwned = [];
+        let nbLicenses = await gameKeys.balanceOf(web3State.account);
+        let array2 = [];
+        for (let i = 0; i < nbLicenses.toString(); i++) {
+          let licenseIds = await gameKeys.tokenOfOwnerByIndex(web3State.account, i);
+          let licencesToGames = await gameKeys.getGameByLicenceId(licenseIds)
+          array2.push(Number(licencesToGames));
         }
-        setDashboard(licensesOwned)
+        console.log(array2);
+        for await (let elem of array2) {
+          console.log(elem);
+          let nft = await gameKeys.getGameInfosById(elem);
+          console.log(nft);
+          licensesOwned.push({
+            title: nft.title,
+            cover: nft.cover,
+            creator: nft.creator,
+            description: nft.description,
+            price: ethers.utils.formatEther(nft.price),
+            date: nft.date.toString(),
+            gameHash: nft.gameHash.toString(),
+            gameID: nft.gameID.toString(),
+          })
+        }
+        setDashboard(licensesOwned);
+        // const licensesOwned = []
+        // const totalSupply = await gameKeys.totalSupply()
+        // for (let i = 1; i <= totalSupply.toString(); i++) {
+        //   let owner = await gameKeys.ownerOf(i)
+        //   if (owner.toLowerCase() === web3State.account) {
+        //     const nft = await gameKeys.getGameInfosById(i)
+        //     licensesOwned.push({
+        //       title: nft.title,
+        //       cover: nft.cover,
+        //       creator: nft.creator,
+        //       description: nft.description,
+        //       price: ethers.utils.formatEther(nft.price),
+        //       date: nft.date.toString(),
+        //       gameHash: nft.gameHash.toString(),
+        //       id: i,
+        //     })
+        //   }
+        // }
+        // setDashboard(licensesOwned)
       }
-
       try {
         getLicence()
       } catch (e) {
@@ -47,8 +71,8 @@ const Dashboard = () => {
     <Container centerContent maxW="container.xl" py="10">
       <Heading mb="5">Your game licenses</Heading>
       <SimpleGrid columns={[1, 1, 1, 2, 3]} gap="8">
-        {dashboard.map((el, index) => {
-          return <DashboardCards key={index} nft={el}></DashboardCards>
+        {dashboard.map((elem, index) => {
+          return <DashboardCards key={index} nft={elem}></DashboardCards>
         })}
       </SimpleGrid>
     </Container>

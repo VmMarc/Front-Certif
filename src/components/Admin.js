@@ -1,12 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 import {
-  Alert,
-  AlertIcon,
   Input,
   Button,
   Flex,
   HStack,
-  Spinner,
   useToast,
   Container,
   Heading
@@ -76,42 +73,24 @@ function Admin() {
     <Container centerContent maxW="container.xl" py="10">
       <Heading mb="5">Admin's Dashboard</Heading>
       <Flex flexDirection="column" alignItems="center" m={4} h="300px">
-        {!gameKeys ? (
-          <Spinner
-            size="xl"
-            label="Connecting to Ethereum"
-            color="blue.500"
-            emptyColor="gray.200"
-          />
-        ) : (
-          <>
-            {web3State.chainId === 42 ? (
-              <>
-                <HStack>
-                  <Input
-                    width="50"
-                    value={inputValue}
-                    placeholder="address"
-                    onChange={(event) => SetInputValue(event.target.value)}
-                  />
-                  <Button
-                    isLoading={isLoading}
-                    loadingText="adding game creator"
-                    colorScheme="teal"
-                    onClick={handleClickAddGameCreator}
-                  >
-                    add game creator
-                  </Button>
-                </HStack>
-              </>
-            ) : (
-              <Alert status="error">
-                <AlertIcon />
-                You are on the wrong network please switch to Kovan
-              </Alert>
-            )}
-          </>
-        )}
+        <>
+          <HStack>
+            <Input
+              width="50"
+              value={inputValue}
+              placeholder="address"
+              onChange={(event) => SetInputValue(event.target.value)}
+            />
+            <Button
+              isLoading={isLoading}
+              loadingText="adding game creator"
+              colorScheme="teal"
+              onClick={handleClickAddGameCreator}
+            >
+              add game creator
+            </Button>
+          </HStack>
+        </>
       </Flex>
     </Container>
   )

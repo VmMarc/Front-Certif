@@ -1,10 +1,10 @@
-import {
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-} from "@chakra-ui/react"
+// import {
+//   NumberInput,
+//   NumberInputField,
+//   NumberInputStepper,
+//   NumberIncrementStepper,
+//   NumberDecrementStepper,
+// } from "@chakra-ui/react"
 import {
   Popover,
   PopoverTrigger,
@@ -252,17 +252,25 @@ function GameCreator() {
 
               <FormControl mt={4}>
                 <FormLabel>Price</FormLabel>
-                <NumberInput step={1} min={0} max={100}>
+                <Input
+                  value={inputValue.price}
+                  onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}
+                  placeholder="Game price in Finney"
+                />
+                {/* <NumberInput
+                  step={1}
+                  min={0}
+                  max={100}
+                  value={inputValue.price}
+                  onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}>
                   <NumberInputField
-                    value={inputValue.price}
-                    onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}
                     placeholder="Game price in Finney"
                   />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
                     <NumberDecrementStepper />
                   </NumberInputStepper>
-                </NumberInput>
+                </NumberInput> */}
               </FormControl>
             </ModalBody>
 

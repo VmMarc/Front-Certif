@@ -36,7 +36,7 @@ const MarketPlace = () => {
               price: ethers.utils.formatEther(nft.price),
               date: nft.date.toString(),
               gameHash: nft.gameHash.toString(),
-              id: i,
+              gameID: nft.gameID.toString(),
             })
           }
           setlisting(listingApproved)

@@ -15,7 +15,7 @@ const Tab2Listed = ({ nft }) => {
   const handleBuyButton = async () => {
     try {
       setIsLoading(true)
-      const tx = await gameKeys.buyGame(nft.id, { value: ethers.utils.parseEther(nft.price) })
+      const tx = await gameKeys.buyGame(nft.gameID, { value: ethers.utils.parseEther(nft.price) })
       await tx.wait()
       toast({
         title: 'Confirmed transaction',

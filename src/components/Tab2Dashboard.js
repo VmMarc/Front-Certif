@@ -19,6 +19,7 @@ const Tab2Dashboard = ({ nft }) => {
           />
         </Center>
 
+
       </VStack>
     </Container>
   )

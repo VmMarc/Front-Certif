@@ -22,7 +22,7 @@ const Tab3 = ({ nft }) => {
         <Center>
           <Text fontWeight="bold">Game id</Text>
           <Spacer />
-          <Text >{nft.id}</Text>
+          <Text >{nft.gameID}</Text>
         </Center>
 
         <Center>

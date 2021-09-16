@@ -1,4 +1,4 @@
-export const GameKeysAddress = '0x1D6bdf00eEBcd1c036f63aB6A94f541466404760'
+export const GameKeysAddress = '0x1D39CD39a4b6C749D7dcb20c9f2232ca631076Ce'
 
 export const GameKeysABI = [
   {
@@ -540,6 +540,11 @@ export const GameKeysABI = [
           {
             "internalType": "uint256",
             "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "gameID",
             "type": "uint256"
           },
           {
