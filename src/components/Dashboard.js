@@ -38,25 +38,6 @@ const Dashboard = () => {
           })
         }
         setDashboard(licensesOwned);
-        // const licensesOwned = []
-        // const totalSupply = await gameKeys.totalSupply()
-        // for (let i = 1; i <= totalSupply.toString(); i++) {
-        //   let owner = await gameKeys.ownerOf(i)
-        //   if (owner.toLowerCase() === web3State.account) {
-        //     const nft = await gameKeys.getGameInfosById(i)
-        //     licensesOwned.push({
-        //       title: nft.title,
-        //       cover: nft.cover,
-        //       creator: nft.creator,
-        //       description: nft.description,
-        //       price: ethers.utils.formatEther(nft.price),
-        //       date: nft.date.toString(),
-        //       gameHash: nft.gameHash.toString(),
-        //       id: i,
-        //     })
-        //   }
-        // }
-        // setDashboard(licensesOwned)
       }
       try {
         getLicence()
@@ -64,7 +45,8 @@ const Dashboard = () => {
         console.log(e)
       }
     }
-  }, [gameKeys, web3State])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [web3State.chainId, web3State.account])
 
 
   return (

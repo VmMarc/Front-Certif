@@ -1,4 +1,4 @@
-export const GameKeysAddress = '0x1D39CD39a4b6C749D7dcb20c9f2232ca631076Ce'
+export const GameKeysAddress = '0x62aD77f8e8c3AA750F569E5591AC4d9D3b144980'
 
 export const GameKeysABI = [
   {

@@ -1,13 +1,13 @@
 import { Center, Heading, Image, Container, Button, VStack } from "@chakra-ui/react"
 import { useToast } from "@chakra-ui/react"
-import { useState, useContext, useEffect } from "react"
-import { Web3Context } from "web3-hooks";
+import { useState, useContext } from "react"
+// import { Web3Context } from "web3-hooks";
 import { ethers } from "ethers"
 import { GameKeysContext } from "../App"
 
 const Tab2Listed = ({ nft }) => {
   const gameKeys = useContext(GameKeysContext)
-  const [web3State] = useContext(Web3Context);
+  // const [web3State] = useContext(Web3Context);
   const toast = useToast()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -39,27 +39,27 @@ const Tab2Listed = ({ nft }) => {
     }
   }
 
-  // Listen to GameCreatorAdded event and react with a state change
-  useEffect(() => {
-    if (gameKeys) {
-      const cb = (account, gameId, licenseId, price) => {
-        toast({
-          title: 'Event GameBought',
-          description: `${account} bought game licence ID ${licenseId} from game ID ${gameId} for ${price} finney`,
-          status: 'info',
-          position: 'top-right',
-          duration: 9000,
-          isClosable: true,
-        })
-      }
-      // ecouter sur l'event DataSet
-      gameKeys.on('GameBought', cb)
-      return () => {
-        // arreter d'ecouter lorsque le component sera unmount
-        gameKeys.off('GameBought', cb)
-      }
-    }
-  }, [gameKeys, web3State.account, toast])
+  // // Listen to GameCreatorAdded event and react with a state change
+  // useEffect(() => {
+  //   const cb = (account, gameId, licenseId, price) => {
+  //     toast({
+  //       title: 'Event GameBought',
+  //       description: `${account} bought game licence ID ${licenseId} from game ID ${gameId} for ${price} finney`,
+  //       status: 'info',
+  //       position: 'top-right',
+  //       duration: 9000,
+  //       isClosable: true,
+  //     })
+  //   }
+  //   // ecouter sur l'event DataSet
+  //   gameKeys.once('GameBought', cb)
+  //   console.log("salut")
+  //   // return () => {
+  //   //   // arreter d'ecouter lorsque le component sera unmount
+  //   //   gameKeys.removeAllListeners('GameBought')
+  //   //   console.log("cb", cb)
+  //   // }
+  // }, [])
 
   return (
     <Container>

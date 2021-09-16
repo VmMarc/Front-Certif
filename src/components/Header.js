@@ -1,7 +1,7 @@
 import { Web3Context } from "web3-hooks";
 import { useContext } from "react";
-import { Button, useColorMode, useColorModeValue, Stack, VStack } from "@chakra-ui/react";
-import { Box, Text, Heading, useDisclosure } from "@chakra-ui/react";
+import { Button, useColorMode, Stack } from "@chakra-ui/react";
+import { Box, Text, Heading, useDisclosure, Flex } from "@chakra-ui/react";
 
 import {
   Modal,
@@ -17,7 +17,6 @@ import {
 function Header({ title, desc, ...rest }) {
   const [web3State, login] = useContext(Web3Context);
   const { toggleColorMode } = useColorMode();
-  const { formBackground } = useColorModeValue("gray.100", "gray.300");
   const { isOpen: isOpenLogoutModal, onOpen: onOpenLogoutModal, onClose: onCloseLogoutModal } = useDisclosure();
 
   const handleClickLogin = () => {
@@ -29,7 +28,7 @@ function Header({ title, desc, ...rest }) {
 
 
   return (
-    <>
+    <Flex>
       <Modal isOpen={isOpenLogoutModal} onClose={onCloseLogoutModal}>
         <ModalOverlay />
         <ModalContent>
@@ -57,12 +56,12 @@ function Header({ title, desc, ...rest }) {
         {...rest}
         w="100%"
         h="100px"
-        bgGradient="linear(to-l, #3CAADD, #4FAA1B)"
+        bgGradient="linear(to-l, #97266D, #DD6B20)"
+        direction="row" spacing={6} justifyContent="space-between" px={8} pt={3}
       >
         <Stack direction="row" spacing={6} justifyContent="space-between" px={8} pt={3}>
           <Button
-            colorScheme="tomato"
-            bg="green"
+            colorScheme="whatsapp"
             onClick={() => (!web3State.isLogged ? handleClickLogin() : onOpenLogoutModal())}
           >
             {!web3State.isLogged ? "Log in" : web3State.chainId === 42 ?
@@ -70,11 +69,11 @@ function Header({ title, desc, ...rest }) {
               web3State.account.split("").splice(-4).join("") : (<p style={{ color: "red" }}>WRONG NETWORK USE KOVAN</p>)}
           </Button>
 
-          <VStack >
+          <Box >
             <Heading>
               <Text
                 alignItems="center"
-                bgGradient="linear(to-l, #97266D,#DD6B20)"
+                bg="white"
                 bgClip="text"
                 fontSize="4xl"
                 fontWeight="extrabold"
@@ -82,16 +81,15 @@ function Header({ title, desc, ...rest }) {
                 GameKeys
               </Text>
             </Heading>
-          </VStack>
+          </Box>
 
-          <div background={formBackground} p={12} rounded={10}>
-            <Button colorScheme="blue" onClick={toggleColorMode}>
-              Dark Mode
-            </Button>
-          </div>
+
+          <Button colorScheme="whatsapp" onClick={toggleColorMode}>
+            Dark Mode
+          </Button>
         </Stack>
       </Box>
-    </>
+    </Flex>
   );
 }
 

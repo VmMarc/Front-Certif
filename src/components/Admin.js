@@ -83,11 +83,11 @@ function Admin() {
             />
             <Button
               isLoading={isLoading}
-              loadingText="adding game creator"
-              colorScheme="teal"
+              loadingText="Adding game creator"
+              colorScheme="blue"
               onClick={handleClickAddGameCreator}
             >
-              add game creator
+              Add game creator
             </Button>
           </HStack>
         </>

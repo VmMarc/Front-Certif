@@ -204,7 +204,7 @@ function GameCreator() {
           isLoading={isLoading}
           loadingText="adding new game"
           onClick={onOpen}
-          colorScheme="teal"
+          colorScheme="blue"
           variant="solid"
           size="lg"
           mt="5"
@@ -251,7 +251,7 @@ function GameCreator() {
               </FormControl>
 
               <FormControl mt={4}>
-                <FormLabel>Price</FormLabel>
+                <FormLabel>Price (1Finney = 0,001Eth)</FormLabel>
                 <Input
                   value={inputValue.price}
                   onChange={(e) => SetInputValue({ ...inputValue, price: e.target.value })}

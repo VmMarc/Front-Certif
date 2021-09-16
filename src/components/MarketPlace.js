@@ -16,8 +16,9 @@ import NFTListed from "./NFTListed"
 
 const MarketPlace = () => {
   const [web3State] = useContext(Web3Context);
-  const [listing, setlisting] = useState([]);
+  const [marketPlace, setMarketPlace] = useState([]);
   const gameKeys = useContext(GameKeysContext)
+
 
 
   useEffect(() => {
@@ -26,7 +27,9 @@ const MarketPlace = () => {
         try {
           const listingApproved = []
           const totalSupply = await gameKeys.gameTotalSupply()
-          for (let i = 1; i <= totalSupply.toString(); i++) {
+          const nbGames = Number(totalSupply)
+          console.log(totalSupply)
+          for (let i = 1; i <= nbGames; i++) {
             const nft = await gameKeys.getGameInfosById(i)
             listingApproved.push({
               title: nft.title,
@@ -39,20 +42,22 @@ const MarketPlace = () => {
               gameID: nft.gameID.toString(),
             })
           }
-          setlisting(listingApproved)
+          setMarketPlace(listingApproved)
+          console.log(listingApproved)
         } catch (e) {
           console.log(e.message)
         }
       }
       getGames()
     }
-  }, [gameKeys, web3State])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [web3State.chainId])
 
   return (
     <Container centerContent maxW="container.xl" py="10">
       <Heading mb="5">Games</Heading>
       <SimpleGrid columns={[1, 1, 1, 2, 3]} gap="8">
-        {listing.map((el, index) => {
+        {marketPlace.map((el, index) => {
           return <NFTListed key={index} nft={el}></NFTListed>
         })}
       </SimpleGrid>
