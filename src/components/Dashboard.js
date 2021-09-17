@@ -46,7 +46,7 @@ const Dashboard = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [web3State.chainId, web3State.account])
+  }, [gameKeys, web3State])
 
 
   return (
