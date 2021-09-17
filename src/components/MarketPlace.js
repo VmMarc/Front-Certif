@@ -51,7 +51,7 @@ const MarketPlace = () => {
       getGames()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [web3State.chainId, gameKeys])
+  }, [gameKeys, web3State])
 
   return (
     <Container centerContent maxW="container.xl" py="10">
